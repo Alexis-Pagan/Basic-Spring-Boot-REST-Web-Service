@@ -1,6 +1,7 @@
 package training.dev.junit;
 
 import static org.junit.Assert.assertEquals;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,6 +24,11 @@ import training.dev.rest.controllers.EmailController;
 @SpringBootTest 
 public class BasicApplicationTest {
 
+	/**
+	 * use mockito
+	 * add negative 
+	 * add couple of more positive test
+	 */
 	private MockMvc mockMvc; 
 
 	/*
