@@ -3,6 +3,7 @@ package training.dev.error.handling;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -32,5 +33,18 @@ public class GlobalGenericErrorClass {
 		
 		return ResponseEntity.status(404).body(responseError);
 		
+	}
+	
+	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+	public ResponseEntity<Error> error(HttpMediaTypeNotSupportedException ex) {
+		/*
+		 * this handler method exception will issue message of 415 
+		 * 1] when no media type is supported by the service "Unsupported media type" is returned
+		 */
+		String message = "Unsupported media type";
+		
+		Error responseError = new Error(message);
+		
+		return ResponseEntity.status(415).body(responseError);
 	}
 }
