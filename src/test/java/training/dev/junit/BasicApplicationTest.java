@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.PrintWriter;
+
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +30,7 @@ import training.dev.rest.controllers.EmailController;
 public class BasicApplicationTest {
 
 	private MockMvc mockMvc; 
+	private PrintWriter console = new PrintWriter(System.out, true);
 
 	/*
 	 * mocking controller instance
@@ -68,13 +72,10 @@ public class BasicApplicationTest {
 		 */
 		assertEquals(201, result.getResponse().getStatus());
 	}
-
-	/*
-	 * test readEmailAddress() method
-	 */
-	@Test 
+	
+	@After 
 	public void testGetAllEmailAddresses() throws Exception {
-
+		
 		RequestBuilder request = MockMvcRequestBuilders
 				.get("/users/emails-addresses/emailController")
 				.contentType(MediaType.APPLICATION_JSON_VALUE) 
@@ -85,16 +86,32 @@ public class BasicApplicationTest {
 				.andDo(print())
 				.andReturn();
 
-		System.out.println(result.getResponse().getContentAsString());
+		console.println("Email returned: " + result.getResponse().getContentAsString());
 		/*
 		 * assumptions
 		 */
-		//assertEquals(200, result.getResponse().getStatus());
+		assertEquals(200, result.getResponse().getStatus());
 	}
+	
+	@Test 
+	public void testNoEmail() throws Exception {
+		String email = "";
 
-	/*
-	 * negativa test
-	 */
+		RequestBuilder request = MockMvcRequestBuilders
+				.post("/users/emails-addresses/emailController")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(email);
+
+		MvcResult result = (MvcResult) mockMvc.perform(request)
+				.andExpect(status().is(400))
+				.andDo(print())
+				.andReturn();
+		/*
+		 * assumptions
+		 */
+		assertEquals(400, result.getResponse().getStatus());
+	}
+	
 	@Test
 	public void testNoHandlerFound() throws Exception {
 		RequestBuilder request = MockMvcRequestBuilders
@@ -107,6 +124,6 @@ public class BasicApplicationTest {
 				.andDo(print())
 				.andReturn();
 
-		System.out.println(result.getResponse().getContentAsString());
+		console.println(result.getResponse().getContentAsString());
 	}
 }
