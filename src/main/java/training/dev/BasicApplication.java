@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /*
- * main program class that will run our embedded tomcat apache web server
+ * main program class
  */
 @SpringBootApplication
 public class BasicApplication {
