@@ -15,7 +15,7 @@ from:
 to: 
 	@Test 
 	public void testNoEmail() throws Exception {
-		String email = "{\"email\":\"\"}";        <- this is JSON content, but empty
+		String email = "{\"email\":\"\"}";        <- this is JSON content, but empty (here the forward slash GitHub omitted them).
     
 2] Added HttpHeaders definition for Accept and ContentType in GET and POST methods
 
