@@ -33,7 +33,9 @@ public class GlobalGenericErrorClass {
 		
 		Error responseError = new Error(message);
 		
-		httpHeader.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+		httpHeader.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+		httpHeader.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+
 		
 		return ResponseEntity.status(404).headers(httpHeader).body(responseError);
 		
@@ -49,7 +51,8 @@ public class GlobalGenericErrorClass {
 		
 		Error responseError = new Error(message);
 		
-		httpHeader.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+		httpHeader.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+		httpHeader.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 		
 		return ResponseEntity.status(415).headers(httpHeader).body(responseError);
 	}

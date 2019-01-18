@@ -36,7 +36,7 @@ import training.dev.valid.Validation;
  * 	3] @ResponseBody allows to serializes Java Object properties to JSON request body
  */
 @RestController
-@Api(value="Rest Endpoint Controller")
+@Api(value="REST Endpoint Controller")
 public class EmailController {
 
 	/*

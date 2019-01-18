@@ -111,7 +111,7 @@ public class BasicApplicationTest {
 	}
 	
 	@Test 
-	public void testNoEmail() throws Exception {
+	public void testNoEmailToSend() throws Exception {
 		String email = "{\"email\":\"\"}";
 
 		RequestBuilder request = MockMvcRequestBuilders
@@ -129,25 +129,26 @@ public class BasicApplicationTest {
 	}
 	
 	@Test 
-	public void testUnsupportedMediaType() throws Exception {
-		
+	public void testCreateEmailBadMediaType() throws Exception {
 		String email = "<email>" + 
 							"employee@evertecinc.com" + 
-					   "</email>";
+					   "</email>" ;
 
 		RequestBuilder request = MockMvcRequestBuilders
 				.post("/users/emails-addresses/emailController")
-				.contentType(MediaType.APPLICATION_XML_VALUE)
+				.contentType(MediaType.APPLICATION_XML_VALUE) // indicates media type of entity-body sent to recipient
 				.accept(MediaType.APPLICATION_JSON_VALUE)
 				.content(email);
 
 		MvcResult result = (MvcResult) mockMvc.perform(request)
-				.andExpect(status().is(400))
+				.andExpect(status().is(201))
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(content().string("{\"message\":\"Sorry, this service only support Media Type JSON.\"}"))
 				.andDo(print())
 				.andReturn();
 		
-		assertEquals(400, result.getResponse().getStatus());
+		console.println(result.getResponse().getContentAsString());
+		assertEquals(201, result.getResponse().getStatus());
 	}
 	
 }
