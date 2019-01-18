@@ -178,4 +178,5 @@ MockHttpServletResponse:
    Redirected URL = null
           Cookies = []
 
-Note: minor improvements still in process.
+
+This is considered a final output for Basic Rest project. However, minor changes may occurr during next days.
