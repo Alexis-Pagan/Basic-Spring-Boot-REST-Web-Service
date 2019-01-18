@@ -110,7 +110,6 @@ public class BasicApplicationTest {
 		assertEquals(200, result.getResponse().getStatus());
 	}
 	
-	
 	@Test 
 	public void testNoEmail() throws Exception {
 		String email = "{\"email\":\"\"}";
@@ -127,39 +126,5 @@ public class BasicApplicationTest {
 				.andReturn();
 		
 		assertEquals(400, result.getResponse().getStatus());
-	}
-	
-	@Test
-	public void testNoHandlerFound() throws Exception {
-		RequestBuilder request = MockMvcRequestBuilders
-				.get("/users/emails-addresses") // bad uri
-				.contentType(MediaType.APPLICATION_JSON_VALUE) 
-				.accept(MediaType.APPLICATION_JSON_VALUE);
-
-		MvcResult result = mockMvc.perform(request)
-				.andExpect(status().is(404))
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-				.andDo(print())
-				.andReturn();
-
-		console.println(result.getResponse().getContentAsString());
-	}
-	
-	@Test
-	public void testUnsupportedMediaType() throws Exception {
-		RequestBuilder request = MockMvcRequestBuilders
-				.get("/users/emails-addresses/emailController") // bad uri
-				.contentType(MediaType.APPLICATION_XML_VALUE) 
-				.accept(MediaType.APPLICATION_JSON_VALUE);
-
-		MvcResult result = mockMvc.perform(request)
-				.andExpect(status().is(415))
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-				.andDo(print())
-				.andReturn();
-
-		console.println(result.getResponse().getContentAsString());
-		assertEquals(415, result.getResponse().getStatus());
-
 	}
 }
