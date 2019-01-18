@@ -127,4 +127,27 @@ public class BasicApplicationTest {
 		
 		assertEquals(400, result.getResponse().getStatus());
 	}
+	
+	@Test 
+	public void testUnsupportedMediaType() throws Exception {
+		
+		String email = "<email>" + 
+							"employee@evertecinc.com" + 
+					   "</email>";
+
+		RequestBuilder request = MockMvcRequestBuilders
+				.post("/users/emails-addresses/emailController")
+				.contentType(MediaType.APPLICATION_XML_VALUE)
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.content(email);
+
+		MvcResult result = (MvcResult) mockMvc.perform(request)
+				.andExpect(status().is(400))
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andDo(print())
+				.andReturn();
+		
+		assertEquals(400, result.getResponse().getStatus());
+	}
+	
 }
