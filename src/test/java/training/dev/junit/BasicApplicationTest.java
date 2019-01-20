@@ -1,6 +1,7 @@
 package training.dev.junit;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -135,6 +136,27 @@ public class BasicApplicationTest {
 				.andReturn();
 
 		console.println("Message : " + result.getResponse().getContentAsString());
+
+	}
+	
+	@Test 
+	public void testSendXMLContentType() throws Exception {
+		String email = "<email>" + "JuanDelPueblo@hotmail.com" + "</email>";
+
+		request = MockMvcRequestBuilders
+				.post("/users/emails-addresses/emailController")
+				.contentType(MediaType.APPLICATION_XML_VALUE)
+				.content(email);
+
+		result = mockMvc.perform(request)
+				.andExpect(status().is(201))
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(content().json("{\"message\":\"Email address -> JuanDelPueblo@hotmail.com <- saved\"}"))
+				.andDo(print())
+				.andReturn();
+
+		console.println("Message : " + result.getResponse().getContentAsString());
+		assertEquals(415, result.getResponse().getContentAsString());
 
 	}
 }
