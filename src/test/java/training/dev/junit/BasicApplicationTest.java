@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,9 +29,13 @@ import training.dev.rest.controllers.EmailController;
 @WebMvcTest(EmailController.class) // Web Mvc Test specify the controller to test
 public class BasicApplicationTest {
 
+	@Autowired
 	private MockMvc mockMvc; // Mock the MVC Configuration
+	
 	private PrintWriter console = new PrintWriter(System.out, true); // System.out.print short version
+	
 	private RequestBuilder request; // contruct request components
+	
 	private MvcResult result; // display result in console.print()
 
 	/*
@@ -131,17 +136,5 @@ public class BasicApplicationTest {
 
 		console.println("Message : " + result.getResponse().getContentAsString());
 
-	}
-
-	@Test()
-	public void testBaduri() throws Exception {
-				
-		request = MockMvcRequestBuilders
-				.post("/Controller");
-
-		result = mockMvc.perform(request)
-				.andExpect(status().is(404))
-				.andDo(print())
-				.andReturn();
 	}
 }
