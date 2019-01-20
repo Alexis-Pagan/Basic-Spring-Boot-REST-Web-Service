@@ -21,10 +21,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
-import training.dev.error.handling.GlobalGenericErrorClass;
 import training.dev.rest.controllers.EmailController;
 
 @RunWith(MockitoJUnitRunner.class) // Run Mockito JUnitRunner  for Mockito Framework
@@ -69,7 +67,7 @@ public class BasicApplicationTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(email);
 
-		result = (MvcResult) mockMvc.perform(request)
+		result = mockMvc.perform(request)
 				.andExpect(status().is(201))
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(content().json("{\"message\":\"Email address -> JuanDelPueblo@hotmail.com <- saved\"}"))
@@ -89,7 +87,7 @@ public class BasicApplicationTest {
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(email);
 
-		result = (MvcResult) mockMvc.perform(request)
+		result = mockMvc.perform(request)
 				.andExpect(status().is(201))
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(content().json("{\"message\":\"Email address -> JuanDelPueblo@hotmail..com.com <- saved\"}"))
@@ -136,21 +134,14 @@ public class BasicApplicationTest {
 
 	}
 
-	@Test() //expected = NoHandlerFoundException.class
-	public void testUrlAddress() throws Exception {
+	@Test() //
+	public void testBaduri() throws Exception {
 		
-		String email = "{\"email\":\"JuanDelPueblo@hotmail.com\"}";
-
 		request = MockMvcRequestBuilders
-				.post("/Controller")
-				.contentType(MediaType.APPLICATION_JSON_VALUE)
-				.accept(MediaType.APPLICATION_JSON_VALUE)
-				.content(email);
+				.post("/Controller");
 
-		result = (MvcResult) mockMvc.perform(request)
-				.andExpect(status().is(201))
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-				.andExpect(content().string("Sorry, no handler method found for: " + "/users/emails-addresses/controller"))
+		result = mockMvc.perform(request)
+				.andExpect(status().is(404))
 				.andDo(print())
 				.andReturn();
 
