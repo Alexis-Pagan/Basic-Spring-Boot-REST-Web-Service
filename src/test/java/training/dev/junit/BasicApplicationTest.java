@@ -151,11 +151,9 @@ public class BasicApplicationTest {
 		result = mockMvc.perform(request)
 				.andExpect(status().is(201))
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-				.andExpect(content().json("{\"message\":\"Email address -> JuanDelPueblo@hotmail.com <- saved\"}"))
 				.andDo(print())
 				.andReturn();
 
-		console.println("Message : " + result.getResponse().getContentAsString());
 		assertEquals(415, result.getResponse().getContentAsString());
 
 	}
