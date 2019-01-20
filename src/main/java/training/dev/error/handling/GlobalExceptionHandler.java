@@ -20,8 +20,10 @@ org.springframework.web.servlet.NoHandlerFoundException;
 
  */
 
+
+
 @ControllerAdvice public class GlobalExceptionHandler { // extends]	
-	
+
 	private HttpHeaders httpHeader = new HttpHeaders();
 
 	/*
@@ -31,10 +33,14 @@ org.springframework.web.servlet.NoHandlerFoundException;
 	 */
 
 	@ExceptionHandler(NoHandlerFoundException.class)
-
-	@ResponseBody public ResponseEntity<Error> error(NoHandlerFoundException ex,
+	public ResponseEntity<Error> error(NoHandlerFoundException ex,
 			HttpServletRequest servletEx) {
-
+		/*
+		 * HttpServletRequest allows use to access to servlet container and acquire the URL sent by client 
+		 * 1] here we have a message to display to user when no handler method can managed the requested resource
+		 * 2] response is sent with status code and message using @ResponseEntity
+		 */
+		
 		System.err.println("No handler-method found exception");
 
 		String message = "Sorry, no handler method found for: " +
@@ -50,17 +56,16 @@ org.springframework.web.servlet.NoHandlerFoundException;
 	}
 
 	@ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-
-	@ResponseBody public ResponseEntity<Error>
+	public ResponseEntity<Error>
 	error(HttpMediaTypeNotSupportedException ex) {
 
 		/*
-		 * this handler method exception will issue message of 415 1] when no media type
-		 * is supported by the service "Unsupported media type" is returned
+		 * this handler method exception will issue message of 415 
+		 * 1] when no media type is supported by the service "Unsupported media type" is returned
 		 */
 
 
-System.err.println("No MediaType Support found exception");
+		System.err.println("No MediaType Support found exception");
 
 		String message = "Sorry, this service only support Media Type JSON.";
 

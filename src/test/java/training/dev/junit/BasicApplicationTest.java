@@ -141,10 +141,7 @@ public class BasicApplicationTest {
 
 		result = mockMvc.perform(request)
 				.andExpect(status().is(404))
-				//.andExpect(content().string("{\"message\":\"blha\"}"))
 				.andDo(print())
 				.andReturn();
-
-		console.println("Message : " + result.getResponse().getContentAsString());
 	}
 }
