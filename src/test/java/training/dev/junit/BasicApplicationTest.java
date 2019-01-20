@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import training.dev.rest.controllers.EmailController;
 
@@ -55,7 +54,7 @@ public class BasicApplicationTest {
 		 * but, the most important helps to initialize the mock mvc with EmailController
 		 */
 		mockMvc = MockMvcBuilders.standaloneSetup(EmailController.class)
-				.setHandlerExceptionResolvers(new ExceptionHandlerExceptionResolver()).build();
+				.build();
 	}
 
 	@Test 
@@ -134,14 +133,15 @@ public class BasicApplicationTest {
 
 	}
 
-	@Test() //
+	@Test()
 	public void testBaduri() throws Exception {
-		
+				
 		request = MockMvcRequestBuilders
 				.post("/Controller");
 
 		result = mockMvc.perform(request)
 				.andExpect(status().is(404))
+				//.andExpect(content().string("{\"message\":\"blha\"}"))
 				.andDo(print())
 				.andReturn();
 

@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /*
  * main program class
  */
-@SpringBootApplication(scanBasePackages= {"training.dev.error.handling"})
+@SpringBootApplication() // scanBasePackages= {"training.dev.error.handling"}
 @EnableWebMvc // Spring MVC Configuration
 public class BasicApplication implements WebMvcConfigurer {
 
@@ -32,4 +32,6 @@ public class BasicApplication implements WebMvcConfigurer {
 	                .addResourceLocations("classpath:/META-INF/resources/webjars/");
 
 	}
+	
+	
 }
