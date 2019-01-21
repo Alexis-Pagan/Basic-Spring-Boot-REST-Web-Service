@@ -65,7 +65,7 @@ public class BasicApplicationTest {
 		 * but, the most important helps to initialize the mock mvc with EmailController
 		 */
 		mockMvc = MockMvcBuilders.standaloneSetup(EmailController.class)
-				//.setControllerAdvice(new GlobalExceptionHandler())
+				.setControllerAdvice(new GlobalExceptionHandler())
 				.build();
 		
 		/*
@@ -152,7 +152,7 @@ public class BasicApplicationTest {
 	}
 	
 	@Test 
-	public void testControllerAdvice() throws Exception {
+	public void testControllerAdviceHttpBadUrl() throws Exception {
 		
 		MockHttpServletResponse response = mockMvc
 				.perform(get("/user-address")
