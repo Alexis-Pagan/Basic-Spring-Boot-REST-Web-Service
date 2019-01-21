@@ -1,7 +1,10 @@
 package training.dev.junit;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
@@ -13,21 +16,26 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import training.dev.error.handling.GlobalExceptionHandler;
 import training.dev.rest.controllers.EmailController;
 
-@RunWith(MockitoJUnitRunner.class) // Run Mockito JUnitRunner  for Mockito Framework
-@WebMvcTest(EmailController.class) // Web Mvc Test specify the controller to test
+//@RunWith(MockitoJUnitRunner.class) // Run Mockito JUnitRunner  for Mockito Framework
+
+@RunWith(SpringRunner.class)
+@WebMvcTest(EmailController.class)
 public class BasicApplicationTest {
 
 	@Autowired
@@ -50,17 +58,21 @@ public class BasicApplicationTest {
 	 */
 	@Before 
 	public void setUp() throws Exception {
-		/*
-		 * initilize fields with Mockito Annotations
-		 */
-		MockitoAnnotations.initMocks(BasicApplicationTest.class);
+
 		/*
 		 * allows to identify the controller to test and perform the 
 		 * necesary operations: GET, PUT, POST, DELETE
 		 * but, the most important helps to initialize the mock mvc with EmailController
 		 */
 		mockMvc = MockMvcBuilders.standaloneSetup(EmailController.class)
+				//.setControllerAdvice(new GlobalExceptionHandler())
 				.build();
+		
+		/*
+		 * comment from: https://thepracticaldeveloper.com/2017/07/31/guide-spring-boot-controller-tests/#Strategy_1_MockMVC_in_Standalone_Mode
+		 * 
+		 * This is because you don’t have any Spring context that can inject them automatically.
+		 */
 	}
 
 	@Test 
@@ -140,21 +152,19 @@ public class BasicApplicationTest {
 	}
 	
 	@Test 
-	public void testSendXMLContentType() throws Exception {
-		String email = "<email>" + "JuanDelPueblo@hotmail.com" + "</email>";
-
-		request = MockMvcRequestBuilders
-				.post("/users/emails-addresses/emailController")
-				.contentType(MediaType.APPLICATION_XML_VALUE)
-				.content(email);
-
-		result = mockMvc.perform(request)
-				.andExpect(status().is(201))
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+	public void testControllerAdvice() throws Exception {
+		
+		MockHttpServletResponse response = mockMvc
+				.perform(get("/user-address").accept(MediaType.APPLICATION_JSON_VALUE)
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().is(404))
 				.andDo(print())
-				.andReturn();
-
-		assertEquals(415, result.getResponse().getContentAsString());
-
+				.andReturn().getResponse();
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+		
+		/**
+		 * Syntax: assertThat([value], [matcher statement]);
+		 */
 	}
 }
