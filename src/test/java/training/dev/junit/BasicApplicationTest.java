@@ -155,13 +155,32 @@ public class BasicApplicationTest {
 	public void testControllerAdvice() throws Exception {
 		
 		MockHttpServletResponse response = mockMvc
-				.perform(get("/user-address").accept(MediaType.APPLICATION_JSON_VALUE)
+				.perform(get("/user-address")
+				.accept(MediaType.APPLICATION_JSON_VALUE)
 				.contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(status().is(404))
 				.andDo(print())
 				.andReturn().getResponse();
 		
 		assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+		
+		/**
+		 * Syntax: assertThat([value], [matcher statement]);
+		 */
+	}
+	
+	@Test 
+	public void testControllerAdviceHyperMedia() throws Exception {
+		
+		MockHttpServletResponse response = mockMvc
+				.perform(get("/users/emails-addresses/emailController")
+				.accept(MediaType.APPLICATION_JSON_VALUE)
+				.contentType(MediaType.APPLICATION_XML_VALUE))
+				.andExpect(status().is(415))
+				.andDo(print())
+				.andReturn().getResponse();
+		
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value());
 		
 		/**
 		 * Syntax: assertThat([value], [matcher statement]);

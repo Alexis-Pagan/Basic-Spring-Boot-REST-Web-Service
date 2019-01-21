@@ -75,5 +75,5 @@ public class GlobalExceptionHandler { // extends]
 
 		httpHeader.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
-		return ResponseEntity.status(415).headers(httpHeader).body(responseError); }
+		return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).headers(httpHeader).body(responseError); }
 }
